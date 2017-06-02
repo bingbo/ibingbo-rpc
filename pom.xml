@@ -12,6 +12,7 @@
         <module>ibingbo-rpc-common</module>
         <module>ibingbo-rpc-server</module>
         <module>ibingbo-rpc-client</module>
+        <module>ibingbo-rpc-service</module>
         <module>ibingbo-rpc-service-impl</module>
     </modules>
 
