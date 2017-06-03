@@ -13,9 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by bing on 17/6/2.
+ * Created by bing on 17/6/3.
  */
-public class RpcClient extends SimpleChannelInboundHandler<RpcResponse>{
+public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcClient.class);
 
     private String host;
@@ -23,17 +24,19 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse>{
 
     private RpcResponse response;
 
-    private final Object object = new Object();
+    private final Object obj = new Object();
 
     public RpcClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcResponse rpcResponse) throws Exception {
+    @Override
+    public void channelRead0(ChannelHandlerContext ctx, RpcResponse response) throws Exception {
         this.response = response;
-        synchronized (object) {
-            object.notifyAll();//收到响应，唤醒线程
+
+        synchronized (obj) {
+            obj.notifyAll(); // 收到响应，唤醒线程
         }
     }
 
@@ -47,30 +50,32 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse>{
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group)
-                    .channel(NioSocketChannel.class)
+            bootstrap.group(group).channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline()
-                                    .addLast(new RpcEncoder(RpcRequest.class))//将rpc请求进行编码（为了发送请求）
-                                    .addLast(new RpcDecoder(RpcResponse.class))//将rpc响应进行解码（为了处理响应）
-                                    .addLast(RpcClient.this);//使用RpcClient发送Rpc请求
+                        @Override
+                        public void initChannel(SocketChannel channel) throws Exception {
+                            channel.pipeline()
+                                    .addLast(new RpcEncoder(RpcRequest.class)) // 将 RPC 请求进行编码（为了发送请求）
+                                    .addLast(new RpcDecoder(RpcResponse.class)) // 将 RPC 响应进行解码（为了处理响应）
+                                    .addLast(RpcClient.this); // 使用 RpcClient 发送 RPC 请求
                         }
-                    }).option(ChannelOption.SO_KEEPALIVE, true);
+                    })
+                    .option(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture future = bootstrap.connect(host, port).sync();
             future.channel().writeAndFlush(request).sync();
 
-            synchronized (object) {
-                object.wait();//未收到响应，使线程等待
+            synchronized (obj) {
+                obj.wait(); // 未收到响应，使线程等待
             }
 
             if (response != null) {
                 future.channel().closeFuture().sync();
             }
             return response;
-        }finally {
+        } finally {
             group.shutdownGracefully();
         }
     }
+
 }

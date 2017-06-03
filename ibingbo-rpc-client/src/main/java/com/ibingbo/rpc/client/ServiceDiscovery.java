@@ -15,19 +15,23 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Created by bing on 17/6/2.
+ * Created by bing on 17/6/3.
  */
-public class RpcServiceDiscovery {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServiceDiscovery.class);
+public class ServiceDiscovery {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDiscovery.class);
+
     private CountDownLatch latch = new CountDownLatch(1);
+
     private volatile List<String> dataList = new ArrayList<String>();
+
     private String registryAddress;
 
-    public RpcServiceDiscovery(String registryAddress) {
+    public ServiceDiscovery(String registryAddress) {
         this.registryAddress = registryAddress;
 
         ZooKeeper zk = connectServer();
-        if (null != zk) {
+        if (zk != null) {
             watchNode(zk);
         }
     }
@@ -38,20 +42,39 @@ public class RpcServiceDiscovery {
         if (size > 0) {
             if (size == 1) {
                 data = dataList.get(0);
-                LOGGER.info("using only data: {}", data);
-            }else {
+                LOGGER.debug("using only data: {}", data);
+            } else {
                 data = dataList.get(ThreadLocalRandom.current().nextInt(size));
-                LOGGER.info("using random data: {}", data);
+                LOGGER.debug("using random data: {}", data);
             }
         }
         return data;
     }
 
+    private ZooKeeper connectServer() {
+        ZooKeeper zk = null;
+        try {
+            zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
+                public void process(WatchedEvent event) {
+                    if (event.getState() == Event.KeeperState.SyncConnected) {
+                        latch.countDown();
+                    }
+                }
+            });
+            latch.await();
+        } catch (IOException e) {
+            LOGGER.error("", e);
+        } catch (InterruptedException e) {
+            LOGGER.error("", e);
+        }
+        return zk;
+    }
+
     private void watchNode(final ZooKeeper zk) {
         try {
             List<String> nodeList = zk.getChildren(Constant.ZK_REGISTRY_PATH, new Watcher() {
-                public void process(WatchedEvent watchedEvent) {
-                    if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) {
+                public void process(WatchedEvent event) {
+                    if (event.getType() == Event.EventType.NodeChildrenChanged) {
                         watchNode(zk);
                     }
                 }
@@ -64,29 +87,10 @@ public class RpcServiceDiscovery {
             LOGGER.debug("node data: {}", dataList);
             this.dataList = dataList;
         } catch (KeeperException e) {
-            LOGGER.error(e.getMessage(), e);
+            e.printStackTrace();
+            LOGGER.error("", e);
         } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.error("", e);
         }
     }
-
-    private ZooKeeper connectServer() {
-        ZooKeeper zk = null;
-        try {
-            zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
-                public void process(WatchedEvent watchedEvent) {
-                    if (watchedEvent.getState() == Event.KeeperState.SyncConnected) {
-                        latch.countDown();
-                    }
-                }
-            });
-            latch.await();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return zk;
-    }
-
 }
