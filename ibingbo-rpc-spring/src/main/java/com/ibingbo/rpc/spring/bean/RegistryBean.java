@@ -3,9 +3,11 @@ package com.ibingbo.rpc.spring.bean;
 import com.ibingbo.rpc.server.RpcServer;
 import com.ibingbo.rpc.server.ServiceRegistry;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by bing on 17/6/10.
@@ -22,6 +24,20 @@ public class RegistryBean implements ApplicationContextAware, InitializingBean {
 
     private ServiceRegistry serviceRegistry;
     private RpcServer rpcServer;
+
+    /**
+     * 获取注册中心配置信息
+     * @param beanId
+     * @param beanFactory
+     * @return
+     */
+    public static RegistryBean getRegistryBean(String beanId, BeanFactory beanFactory) {
+        if (StringUtils.hasText(beanId) && beanFactory.containsBean(beanId)) {
+            return (RegistryBean) beanFactory.getBean(beanId);
+        } else {
+            return beanFactory.getBean(RegistryBean.class);
+        }
+    }
 
     public String getId() {
         return id;

@@ -18,6 +18,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ibingbo-rpc-server" />
     <orderEntry type="module" module-name="ibingbo-rpc-common" />
+    <orderEntry type="module" module-name="ibingbo-rpc-client" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.9.Final" level="project" />
     <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-core:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.dyuproject.protostuff:protostuff-api:1.1.1" level="project" />
