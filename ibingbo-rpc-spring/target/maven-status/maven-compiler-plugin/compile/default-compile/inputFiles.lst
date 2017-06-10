@@ -1,0 +1,7 @@
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/namespace/handler/IbingboNamespaceHandler.java
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/bean/RegistryBean.java
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/bean/ReferenceBean.java
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/bean/definition/parser/ReferenceBeanDefinitionParser.java
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/bean/definition/parser/RegistryBeanDefinitionParser.java
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/bean/definition/parser/ServiceBeanDefinitionParser.java
+/Users/zhangbingbing/Documents/github/ibingbo-rpc/ibingbo-rpc-spring/src/main/java/com/ibingbo/rpc/spring/bean/ServiceBean.java

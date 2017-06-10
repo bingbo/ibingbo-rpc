@@ -1,0 +1,7 @@
+com/ibingbo/rpc/spring/bean/ServiceBean.class
+com/ibingbo/rpc/spring/bean/definition/parser/ReferenceBeanDefinitionParser.class
+com/ibingbo/rpc/spring/bean/ReferenceBean.class
+com/ibingbo/rpc/spring/bean/definition/parser/ServiceBeanDefinitionParser.class
+com/ibingbo/rpc/spring/bean/RegistryBean.class
+com/ibingbo/rpc/spring/bean/definition/parser/RegistryBeanDefinitionParser.class
+com/ibingbo/rpc/spring/namespace/handler/IbingboNamespaceHandler.class

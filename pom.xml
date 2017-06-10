@@ -12,7 +12,74 @@
         <module>ibingbo-rpc-common</module>
         <module>ibingbo-rpc-server</module>
         <module>ibingbo-rpc-client</module>
+        <module>rpc</module>
+        <module>ibingbo-rpc-spring</module>
     </modules>
 
+    <dependencies>
+        <!-- Netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.0.9.Final</version>
+        </dependency>
+        <!-- Protostuff -->
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- Objenesis -->
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.8.RELEASE</version>
+        </dependency>
+        <!-- ZooKeeper -->
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.5.3-beta</version>
+        </dependency>
+
+        <!-- Apache Commons Collections -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.3.8.RELEASE</version>
+        </dependency>
+
+        <!-- CGLib -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

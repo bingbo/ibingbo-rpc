@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="https://github.com/bingbo/schema/ibingbo"
+            xmlns="https://github.com/bingbo/schema/ibingbo"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:beans="http://www.springframework.org/schema/beans">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+    <xsd:element name="annotation-config">
+        <xsd:annotation>
+            <xsd:documentation>
+                <![CDATA[
+                    激活可以在bean中被探测到的注解
+                ]]>
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <!--标签元素-->
+    <xsd:element name="registry" type="registryType"/>
+    <xsd:element name="service" type="serviceType"/>
+    <xsd:element name="reference" type="referenceType"/>
+
+    <xsd:complexType name="baseType">
+        <xsd:annotation>
+            <xsd:documentation>
+                <![CDATA[
+                    service和reference的基本schema类型
+                ]]>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="id" type="xsd:ID" use="optional"/>
+        <xsd:attribute name="interface" type="xsd:string" use="required"/>
+        <xsd:attribute name="version" type="xsd:string" use="optional"/>
+        <xsd:attribute name="group" type="xsd:string" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="serviceType">
+        <xsd:annotation>
+            <xsd:documentation>
+                <![CDATA[
+                    service bean的schema类型，继承baseType，同时还有自己的属性ref
+                ]]>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="baseType">
+                <xsd:attribute name="ref" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="referenceType">
+        <xsd:annotation>
+            <xsd:documentation>
+                <![CDATA[
+                    reference bean类型，完全继承baseType
+                ]]>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="baseType">
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="registryType">
+        <xsd:annotation>
+            <xsd:documentation>
+                <![CDATA[
+                    registry bean类型，注册中心信息
+                ]]>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="id" type="xsd:ID" use="optional"/>
+        <xsd:attribute name="address" type="xsd:string" use="required"/>
+        <xsd:attribute name="path" type="xsd:string" use="optional"/>
+        <xsd:attribute name="username" type="xsd:string" use="optional"/>
+        <xsd:attribute name="password" type="xsd:string" use="optional"/>
+        <xsd:attribute name="connectionTimeout" type="xsd:integer" use="optional" default="3000"/>
+        <xsd:attribute name="sessionTimeout" type="xsd:integer" use="optional" default="3000"/>
+    </xsd:complexType>
+</xsd:schema>
